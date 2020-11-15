@@ -10,8 +10,17 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
+    io.emit('notification', 'A new user is connected.')
+
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg)
+    })
+    
+    socket.on('nickname change', (name) => {
+        io.emit(
+            'notification',
+            `${name.old} changed their name to ${name.latest}.`
+        )
     })
 })
 
